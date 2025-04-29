@@ -25,3 +25,10 @@ module torus2a(radius, translation)
   rotate_extrude(convexity = 4)
     translate([translation, 0, 0]) circle(r = radius);
 }
+
+module torus3a(outsideDiameter, circleDiameter)
+{
+  echo("3a outsideDiameter, circleDiameter", outsideDiameter, circleDiameter);
+  circleRadius = circleDiameter/2;
+  torus2a(circleRadius, outsideDiameter/2-circleRadius);
+}
