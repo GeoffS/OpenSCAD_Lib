@@ -7,7 +7,7 @@ import subprocess
 from time import sleep
 
 
-def main(open_scad_file, build_fa, build_fs, osc, make_flag, list_make_flags):
+def main(open_scad_file, dirDepth, build_fa, build_fs, osc, make_flag, list_make_flags):
     base_name = open_scad_file.split('.scad')[0]
 
     make_flags = [re.findall(r'^make(.*) = false;', line) for line in open(open_scad_file)]
@@ -18,6 +18,9 @@ def main(open_scad_file, build_fa, build_fs, osc, make_flag, list_make_flags):
         for flag in make_flags:
             print(f"   {flag}")
         return
+    
+    outputDir = '../' * dirDepth
+    print(f'Output directory = {outputDir}')
 
     if make_flags:
         if make_flag and make_flag not in make_flags:
@@ -31,7 +34,7 @@ def main(open_scad_file, build_fa, build_fs, osc, make_flag, list_make_flags):
             procs.append(subprocess.Popen(
                 [
                     osc,
-                    '-o', '../' + base_name + ' ' + flag + '.stl',
+                    '-o', outputDir + base_name + ' ' + flag + '.stl',
                     '-D', 'build_fa=' + str(build_fa),
                     '-D', 'build_fs=' + str(build_fs),
                     '-D', 'developmentRender=false',
@@ -49,7 +52,7 @@ def main(open_scad_file, build_fa, build_fs, osc, make_flag, list_make_flags):
         subprocess.run(
             [
                 osc,
-                '-o', '../' + base_name + '.stl',
+                '-o', outputDir + base_name + '.stl',
                 '-D', 'build_fa=' + str(build_fa),
                 '-D', 'build_fs=' + str(build_fs),
                 '-D', 'developmentRender=false',
@@ -67,6 +70,7 @@ if __name__ == '__main__':
 
     parser = argparse.ArgumentParser(description="Create STLs from an OpenSCAD file.")
     parser.add_argument("open_scad_file", type=str, help="OpenSCAD file to render.")
+    parser.add_argument("--dirDepth", "-d", type=int, default=1, help="Depth of the SCAD file from the STL destination.")
     parser.add_argument("--build_fa", "-fa", type=int, default=2, help="Rendering angle.")
     parser.add_argument("--build_fs", "-fs", type=float, default=0.5, help="Rendering minimum length.")
     parser.add_argument("--make_flag", "-mf", type=str, default="", help="Make-flag to render.")
@@ -82,6 +86,7 @@ if __name__ == '__main__':
 
     main(
         args.open_scad_file, 
+        args.dirDepth,
         args.build_fa, 
         args.build_fs, 
         args.osc, 
