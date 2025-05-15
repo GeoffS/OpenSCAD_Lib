@@ -35,6 +35,7 @@ def main(open_scad_file, dirDepth, build_fa, build_fs, osc, make_flag, list_make
                 [
                     osc,
                     '-o', outputDir + base_name + ' ' + flag + '.stl',
+                    '--backend', 'Manifold',
                     '-D', 'build_fa=' + str(build_fa),
                     '-D', 'build_fs=' + str(build_fs),
                     '-D', 'developmentRender=false',
@@ -53,6 +54,7 @@ def main(open_scad_file, dirDepth, build_fa, build_fs, osc, make_flag, list_make
             [
                 osc,
                 '-o', outputDir + base_name + '.stl',
+                '--backend', 'Manifold',
                 '-D', 'build_fa=' + str(build_fa),
                 '-D', 'build_fs=' + str(build_fs),
                 '-D', 'developmentRender=false',
@@ -78,7 +80,7 @@ if __name__ == '__main__':
     parser.add_argument(
         "-osc",
         type=str,
-        default=r"C:\Program Files\OpenSCAD\openscad.exe",
+        default=r"C:\tools\OpenSCAD-2025.05.14-x86-64\openscad.exe", #"C:\Program Files\OpenSCAD\openscad.exe",
         help="OpenSCAD executable path.")
 
     args = parser.parse_args()
