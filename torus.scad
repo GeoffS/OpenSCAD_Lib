@@ -19,6 +19,19 @@ module torus3(outsideDiameter, circleDiameter)
   torus2(circleRadius, outsideDiameter/2-circleRadius);
 }
 
+module torus2fn(outsideDiameter, outsideFN, circleDiameter)
+{
+  circleRadius = circleDiameter/2;
+  // torus2(circleRadius, outsideDiameter/2-circleRadius);
+  rotate_extrude(convexity = 10, $fn=outsideFN)
+    translate([outsideDiameter/2-circleRadius, 0, 0])
+      difference()
+      {
+        circle(r = circleRadius, $fn=120);
+        translate([-2*circleRadius,-circleRadius-1]) square(2*[circleRadius, circleRadius+2]);
+      }
+}
+
 module torus2a(radius, translation)
 {
   echo("2a radius, translation", radius, translation);
