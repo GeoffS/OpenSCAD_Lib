@@ -45,3 +45,23 @@ module torus3a(outsideDiameter, circleDiameter)
   circleRadius = circleDiameter/2;
   torus2a(circleRadius, outsideDiameter/2-circleRadius);
 }
+
+module cheeseWheel(OD, arcRadius, thickness)
+{
+  echo("cheeseWheel: OD, radius, thickness = ", OD, arcRadius, thickness);
+  rotate_extrude(convexity = 8, $fn=360)
+      difference()
+      {
+        union()
+        {
+          x = OD/2 - arcRadius;
+          y = 2* arcRadius;
+          translate([OD/2 - arcRadius, 0, 0]) circle(r = arcRadius);
+          if(x > 0) translate([0, -y/2]) square([x, y]);
+        }
+        s2 = 4*arcRadius;
+        translate([-s2, -s2/2]) square(s2);
+        translate([0,    thickness/2]) square(s2);
+        translate([0, -s2-thickness/2]) square(s2);
+      }
+}
