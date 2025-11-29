@@ -5,7 +5,7 @@ include <torus.scad>
 
 nothing = 0.01;
 
-module simpleChamferedCylinder(d, h, cz, flip=true)
+module simpleChamferedCylinder(d, h, cz, flip=false)
 {
   echo("simpleChamferedCylinder... flip=", flip);
   if(flip) translate([0,0,h]) mirror([0,0,1])simpleChamferedCylinderCore(d=d, h=h, cz=cz);
