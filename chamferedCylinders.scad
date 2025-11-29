@@ -5,9 +5,15 @@ include <torus.scad>
 
 nothing = 0.01;
 
-module simpleChamferedCylinder(d, h, cz)
+module simpleChamferedCylinder(d, h, cz, flip=true)
 {
-  echo("simpleChamferedCylinder...");
+  echo("simpleChamferedCylinder... flip=", flip);
+  if(flip) translate([0,0,h]) mirror([0,0,1])simpleChamferedCylinderCore(d=d, h=h, cz=cz);
+  else simpleChamferedCylinderCore(d=d, h=h, cz=cz);
+}
+
+module simpleChamferedCylinderCore(d = d, h = h, cz = cz)
+{
   h1 = h - cz;
   cylinder(d=d, h=h1+nothing);
   translate([0,0,h1]) cylinder(d1=d, d2=d-2*cz, h=cz);
@@ -18,7 +24,7 @@ module simpleChamferedCylinderDoubleEnded(d, h, cz)
   h1 = h/2;
   translate([0,0,h1])
     double(0, 0)
-      translate([0,0,-nothing]) simpleChamferedCylinder(d=d, h=h1+nothing, cz=cz);
+      translate([0,0,-nothing]) simpleChamferedCylinderCore(d=d, h=h1+nothing, cz=cz);
 }
 
 module radiusedChamferedCylinderDoubleEnded(d, h, r=-1, cz)
