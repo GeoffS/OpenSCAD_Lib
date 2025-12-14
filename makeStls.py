@@ -80,7 +80,7 @@ if __name__ == '__main__':
     parser.add_argument(
         "-osc",
         type=str,
-        default=r"C:\tools\OpenSCAD-2025.05.14-x86-64\openscad.exe", #"C:\Program Files\OpenSCAD\openscad.exe",
+        default=r"C:\tools\OpenSCAD-2025.12.09-x86-64\openscad.exe", #"C:\Program Files\OpenSCAD\openscad.exe",
         help="OpenSCAD executable path.")
 
     args = parser.parse_args()
