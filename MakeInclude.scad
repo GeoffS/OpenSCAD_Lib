@@ -18,6 +18,7 @@ echo(str("$fs = ", $fs));
 nothing = 0.01;
 
 mm_per_inch = 25.4;
+mm = mm_per_inch;
 
 // Backwards compatibility...
 module tc(t, c) { tcu(t, c); }
