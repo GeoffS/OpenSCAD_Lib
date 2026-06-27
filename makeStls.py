@@ -6,6 +6,8 @@ import re
 import subprocess
 from time import sleep
 
+betweenJobsSleep_s = 1;
+
 
 def main(open_scad_file, dirDepth, build_fa, build_fs, osc, make_flag, list_make_flags):
     base_name = open_scad_file.split('.scad')[0]
@@ -44,13 +46,21 @@ def main(open_scad_file, dirDepth, build_fa, build_fs, osc, make_flag, list_make
                 ],
                 bufsize=1, 
                 universal_newlines=True))
-            sleep(2)
+            sleep(betweenJobsSleep_s)
 
         print('\nWaiting...', end='')
         for p in procs:
             p.wait()
+
+        print("\nAll commands completed.\n")
+              
+        err_count = 0;
+        for p in procs: 
+            if(p.returncode != 0): err_count += 1
+        if(err_count == 0): print("All commands completed with no errors.")
+        else: print(f"\n\n=======> ERROR: {err_count} errors occured.\n\n")
     else:
-        subprocess.run(
+        ret = subprocess.run(
             [
                 osc,
                 '-o', outputDir + base_name + '.stl',
@@ -64,7 +74,13 @@ def main(open_scad_file, dirDepth, build_fa, build_fs, osc, make_flag, list_make
             universal_newlines=True,
         )
 
-    print(" Done!")
+        print(f"ret = {ret}")
+        print(f"ret.returncode = {ret.returncode}")
+
+        if(ret.returncode != 0):
+            print(f"ERROR processing '{open_scad_file}'")
+
+    print("Done!")
 
 
 if __name__ == '__main__':
